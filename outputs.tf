@@ -1,4 +1,29 @@
-# This file will contain the output definitions for your module.
-# Module outputs are made available to the configuration using the module, so they are
-# often used to pass information about the parts of your infrastructure defined by the
-# module to other parts of your configuration.
+output "html_url" {
+  description = "The URL to the browsable HTML overview of the workspace."
+  value       = tfe_workspace.this.html_url
+}
+
+output "id" {
+  description = "The workspace ID."
+  value       = tfe_workspace.this.id
+}
+
+output "resource_count" {
+  description = "The number of resources managed by the workspace."
+  value       = tfe_workspace.this.resource_count
+}
+
+output "workspace" {
+  description = "Terraform Cloud workspace resource."
+  value       = tfe_workspace.this
+}
+
+output "workspace_run_tasks" {
+  description = "The workspace run tasks."
+  value       = tfe_workspace_run_task.this
+}
+
+output "workspace_run_tasks_id" {
+  description = "The workspace run tasks id."
+  value       = { for value in tfe_workspace_run_task.this : value.task_id => value.id }
+}
