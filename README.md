@@ -153,6 +153,14 @@ Type: `bool`
 
 Default: `false`
 
+### <a name="input_oauth_client_name"></a> [oauth\_client\_name](#input\_oauth\_client\_name)
+
+Description: (Optional) Name of the OAuth client.
+
+Type: `string`
+
+Default: `"GitHub"`
+
 ### <a name="input_organization"></a> [organization](#input\_organization)
 
 Description: (Optional) Name of the organization.
@@ -334,6 +342,7 @@ The following resources are used by this module:
 - [tfe_workspace.this](https://registry.terraform.io/providers/hashicorp/tfe/latest/docs/resources/workspace) (resource)
 - [tfe_workspace_run_task.this](https://registry.terraform.io/providers/hashicorp/tfe/latest/docs/resources/workspace_run_task) (resource)
 - [tfe_workspace_settings.this](https://registry.terraform.io/providers/hashicorp/tfe/latest/docs/resources/workspace_settings) (resource)
+- [tfe_oauth_client.client](https://registry.terraform.io/providers/hashicorp/tfe/latest/docs/data-sources/oauth_client) (data source)
 - [tfe_project.this](https://registry.terraform.io/providers/hashicorp/tfe/latest/docs/data-sources/project) (data source)
 
 ## Outputs

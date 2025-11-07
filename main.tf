@@ -1,7 +1,13 @@
 data "tfe_project" "this" {
-  count          = var.project_name != null ? 1 : 0
-  organization   = var.organization
-  name           = var.project_name
+  count        = var.project_name != null ? 1 : 0
+  organization = var.organization
+  name         = var.project_name
+}
+
+data "tfe_oauth_client" "client" {
+  count        = var.oauth_client_name != null ? 1 : 0
+  organization = var.organization
+  name         = var.oauth_client_name
 }
 
 resource "tfe_workspace" "this" {
@@ -32,7 +38,7 @@ resource "tfe_workspace" "this" {
       identifier                 = var.vcs_repo.identifier
       branch                     = var.vcs_repo.branch
       ingress_submodules         = var.vcs_repo.ingress_submodules
-      oauth_token_id             = var.vcs_repo.oauth_token_id
+      oauth_token_id             = length(data.tfe_oauth_client.client) > 0 ? data.tfe_oauth_client.client[0].oauth_token_id : null
       github_app_installation_id = var.vcs_repo.github_app_installation_id
       tags_regex                 = var.vcs_repo.tags_regex
     }
@@ -78,12 +84,12 @@ resource "tfe_workspace_run_task" "this" {
 }
 
 resource "tfe_variable" "this" {
-  for_each        = { for variable in var.variable : variable.key => variable }
-  key             = each.value.key
-  value           = each.value.value
-  category        = each.value.category
-  description     = lookup(each.value, "description", null)
-  hcl             = lookup(each.value, "hcl", false)
-  sensitive       = lookup(each.value, "sensitive", false)
-  workspace_id    = tfe_workspace.this.id
+  for_each     = { for variable in var.variable : variable.key => variable }
+  key          = each.value.key
+  value        = each.value.value
+  category     = each.value.category
+  description  = lookup(each.value, "description", null)
+  hcl          = lookup(each.value, "hcl", false)
+  sensitive    = lookup(each.value, "sensitive", false)
+  workspace_id = tfe_workspace.this.id
 }

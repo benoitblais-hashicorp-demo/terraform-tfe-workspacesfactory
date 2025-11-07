@@ -69,6 +69,13 @@ variable "global_remote_state" {
   default     = false
 }
 
+variable "oauth_client_name" {
+  description = "(Optional) Name of the OAuth client."
+  type        = string
+  nullable    = false
+  default     = "GitHub"
+}
+
 # It is required to specify the organization when creating a workspace.
 # The value is set to null by default to not force the user to provide a value.
 # The value is supposed to be provided through variable at the project level.
