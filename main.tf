@@ -4,6 +4,12 @@ data "tfe_project" "this" {
   name           = var.project_name
 }
 
+data "tfe_oauth_client" "client" {
+  count        = var.oauth_client_name != null ? 1 : 0
+  organization = var.organization
+  name         = var.oauth_client_name
+}
+
 resource "tfe_workspace" "this" {
 
   name                          = var.name
@@ -32,7 +38,7 @@ resource "tfe_workspace" "this" {
       identifier                 = var.vcs_repo.identifier
       branch                     = var.vcs_repo.branch
       ingress_submodules         = var.vcs_repo.ingress_submodules
-      oauth_token_id             = var.vcs_repo.oauth_token_id
+      oauth_token_id             = length(data.tfe_oauth_client.client) > 0 ? data.tfe_oauth_client.client[0].oauth_token_id : null 
       github_app_installation_id = var.vcs_repo.github_app_installation_id
       tags_regex                 = var.vcs_repo.tags_regex
     }
