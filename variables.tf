@@ -10,28 +10,14 @@ variable "project_name" {
   nullable    = false
 }
 
-variable "vcs_repo" {
-  description = <<EOT
-  (Required) Settings for the workspace's VCS repository, enabling the UI/VCS-driven run workflow. Omit this argument to utilize the CLI-driven and API-driven workflows, where runs are not driven by webhooks on your VCS provider.
-    identifier                 : (Required) A reference to your VCS repository in the format '<vcs organization>/<repository>' where '<vcs organization>' and '<repository>' refer to the organization and repository in your VCS provider. The format for Azure DevOps is '<ado organization>/<ado project>/_git/<ado repository>'.
-    branch                     : (Optional) The repository branch that Terraform will execute from. This defaults to the repository's default branch (e.g. main).
-    ingress_submodules         : (Optional) Whether submodules should be fetched when cloning the VCS repository.
-    oauth_token_id             : (Optional) The VCS Connection (OAuth Connection + Token) to use. This ID can be obtained from a 'tfe_oauth_client' resource. This conflicts with 'github_app_installation_id' and can only be used if 'github_app_installation_id' is not used.
-    github_app_installation_id : (Optional) The installation id of the Github App. This conflicts with 'oauth_token_id' and can only be used if 'oauth_token_id' is not used.
-    tags_regex                 : (Optional) A regular expression used to trigger a Workspace run for matching Git tags. This option conflicts with 'trigger_patterns' and 'trigger_prefixes'. Should only set this value if the former is not being used.
-  EOT
-  type = object({
-    identifier                 = string
-    branch                     = optional(string, null)
-    ingress_submodules         = optional(bool, false)
-    oauth_token_id             = optional(string, null)
-    github_app_installation_id = optional(string, null)
-    tags_regex                 = optional(string, null)
-  })
+variable "vcs_repo_identifier" {
+  description = "(Required) A reference to your VCS repository in the format '<vcs organization>/<repository>' where '<vcs organization>' and '<repository>' refer to the organization and repository in your VCS provider. The format for Azure DevOps is '<ado organization>/<ado project>/_git/<ado repository>'."
+  type        = string
+  nullable    = false
 
   validation {
-    condition     = var.vcs_repo != null ? var.vcs_repo.oauth_token_id != null && var.vcs_repo.github_app_installation_id != null ? false : true : true
-    error_message = "`oauth_token_id` conflicts with `github_app_installation_id`."
+    condition     = length(regexall("^[^/]+/[^/]+$", var.vcs_repo_identifier)) > 0
+    error_message = "`vcs_repo_identifier` must be in the format '<vcs organization>/<repository>'."
   }
 }
 
@@ -233,6 +219,41 @@ variable "variable" {
 
 variable "working_directory" {
   description = "(Optional) A relative path that Terraform will execute within. Defaults to the root of your repository."
+  type        = string
+  default     = null
+}
+
+variable "vcs_repo_branch" {
+  description = "(Optional) The repository branch that Terraform will execute from. This defaults to the repository's default branch (e.g. main)."
+  type        = string
+  default     = null
+}
+
+variable "vcs_repo_ingress_submodules" {
+  description = "(Optional) Whether submodules should be fetched when cloning the VCS repository."
+  type        = bool
+  default     = false
+}
+
+variable "vcs_repo_oauth_token_id" {
+  description = "(Optional) The VCS Connection (OAuth Connection + Token) to use. This ID can be obtained from a 'tfe_oauth_client' resource. This conflicts with 'github_app_installation_id' and can only be used if 'github_app_installation_id' is not used."
+  type        = string
+  default     = null
+}
+
+variable "vcs_repo_github_app_installation_id" {
+  description = "(Optional) The installation id of the Github App. This conflicts with 'oauth_token_id' and can only be used if 'oauth_token_id' is not used."
+  type        = string
+  default     = null 
+
+  validation {
+    condition     = var.vcs_repo_oauth_token_id != null && var.vcs_repo_github_app_installation_id != null ? false : true
+    error_message = "`vcs_repo_oauth_token_id` conflicts with `vcs_repo_github_app_installation_id`."
+  }
+}
+
+variable "vcs_repo_tags_regex" {
+  description = "(Optional) A regular expression used to trigger a Workspace run for matching Git tags. This option conflicts with 'trigger_patterns' and 'trigger_prefixes'. Should only set this value if the former is not being used."
   type        = string
   default     = null
 }

@@ -32,16 +32,13 @@ resource "tfe_workspace" "this" {
   trigger_patterns              = var.trigger_patterns
   trigger_prefixes              = var.trigger_prefixes
 
-  dynamic "vcs_repo" {
-    for_each = var.vcs_repo != null ? [true] : []
-    content {
-      identifier                 = var.vcs_repo.identifier
-      branch                     = var.vcs_repo.branch
-      ingress_submodules         = var.vcs_repo.ingress_submodules
-      oauth_token_id             = length(data.tfe_oauth_client.client) > 0 ? data.tfe_oauth_client.client[0].oauth_token_id : null
-      github_app_installation_id = var.vcs_repo.github_app_installation_id
-      tags_regex                 = var.vcs_repo.tags_regex
-    }
+  vcs_repo {
+      identifier                 = var.vcs_repo_identifier
+      branch                     = var.vcs_repo_branch
+      ingress_submodules         = var.vcs_repo_ingress_submodules
+      oauth_token_id             = length(data.tfe_oauth_client.client) > 0 ? data.tfe_oauth_client.client[0].oauth_token_id : var.vcs_repo_oauth_token_id
+      github_app_installation_id = var.vcs_repo_github_app_installation_id
+      tags_regex                 = var.vcs_repo_tags_regex
   }
 
   working_directory = var.working_directory
