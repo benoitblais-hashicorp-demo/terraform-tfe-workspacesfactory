@@ -244,7 +244,7 @@ variable "vcs_repo_oauth_token_id" {
 variable "vcs_repo_github_app_installation_id" {
   description = "(Optional) The installation id of the Github App. This conflicts with 'oauth_token_id' and can only be used if 'oauth_token_id' is not used."
   type        = string
-  default     = null 
+  default     = null
 
   validation {
     condition     = var.vcs_repo_oauth_token_id != null && var.vcs_repo_github_app_installation_id != null ? false : true
