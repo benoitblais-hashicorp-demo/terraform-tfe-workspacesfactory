@@ -11,7 +11,7 @@ variable "project_name" {
 }
 
 variable "vcs_repo_identifier" {
-  description = "(Required) A reference to your VCS repository in the format '<vcs organization>/<repository>' where '<vcs organization>' and '<repository>' refer to the organization and repository in your VCS provider. The format for Azure DevOps is '<ado organization>/<ado project>/_git/<ado repository>'."
+  description = "(Required) A reference to your VCS repository in the format '<vcs organization>/<repository>'."
   type        = string
   nullable    = false
 
@@ -244,7 +244,7 @@ variable "vcs_repo_oauth_token_id" {
 variable "vcs_repo_github_app_installation_id" {
   description = "(Optional) The installation id of the Github App. This conflicts with 'oauth_token_id' and can only be used if 'oauth_token_id' is not used."
   type        = string
-  default     = null 
+  default     = null
 
   validation {
     condition     = var.vcs_repo_oauth_token_id != null && var.vcs_repo_github_app_installation_id != null ? false : true
