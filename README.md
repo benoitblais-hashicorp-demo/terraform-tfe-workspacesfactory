@@ -77,6 +77,29 @@ Description: (Required) Name of the project where the workspace should be create
 
 Type: `string`
 
+### <a name="input_vcs_repo"></a> [vcs\_repo](#input\_vcs\_repo)
+
+Description:   (Required) Settings for the workspace's VCS repository, enabling the UI/VCS-driven run workflow. Omit this argument to utilize the CLI-driven and API-driven workflows, where runs are not driven by webhooks on your VCS provider.  
+    identifier                 : (Required) A reference to your VCS repository in the format '<vcs organization>/<repository>' where '<vcs organization>' and '<repository>' refer to the organization and repository in your VCS provider. The format for Azure DevOps is '<ado organization>/<ado project>/\_git/<ado repository>'.  
+    branch                     : (Optional) The repository branch that Terraform will execute from. This defaults to the repository's default branch (e.g. main).  
+    ingress\_submodules         : (Optional) Whether submodules should be fetched when cloning the VCS repository.  
+    oauth\_token\_id             : (Optional) The VCS Connection (OAuth Connection + Token) to use. This ID can be obtained from a 'tfe\_oauth\_client' resource. This conflicts with 'github\_app\_installation\_id' and can only be used if 'github\_app\_installation\_id' is not used.  
+    github\_app\_installation\_id : (Optional) The installation id of the Github App. This conflicts with 'oauth\_token\_id' and can only be used if 'oauth\_token\_id' is not used.  
+    tags\_regex                 : (Optional) A regular expression used to trigger a Workspace run for matching Git tags. This option conflicts with 'trigger\_patterns' and 'trigger\_prefixes'. Should only set this value if the former is not being used.
+
+Type:
+
+```hcl
+object({
+    identifier                 = string
+    branch                     = optional(string, null)
+    ingress_submodules         = optional(bool, false)
+    oauth_token_id             = optional(string, null)
+    github_app_installation_id = optional(string, null)
+    tags_regex                 = optional(string, null)
+  })
+```
+
 ## Optional Inputs
 
 The following input variables are optional (have default values):
@@ -300,31 +323,6 @@ list(object({
 ```
 
 Default: `[]`
-
-### <a name="input_vcs_repo"></a> [vcs\_repo](#input\_vcs\_repo)
-
-Description:   (Optional) Settings for the workspace's VCS repository, enabling the UI/VCS-driven run workflow. Omit this argument to utilize the CLI-driven and API-driven workflows, where runs are not driven by webhooks on your VCS provider.  
-    identifier                 : (Required) A reference to your VCS repository in the format '<vcs organization>/<repository>' where '<vcs organization>' and '<repository>' refer to the organization and repository in your VCS provider. The format for Azure DevOps is '<ado organization>/<ado project>/\_git/<ado repository>'.  
-    branch                     : (Optional) The repository branch that Terraform will execute from. This defaults to the repository's default branch (e.g. main).  
-    ingress\_submodules         : (Optional) Whether submodules should be fetched when cloning the VCS repository.  
-    oauth\_token\_id             : (Optional) The VCS Connection (OAuth Connection + Token) to use. This ID can be obtained from a 'tfe\_oauth\_client' resource. This conflicts with 'github\_app\_installation\_id' and can only be used if 'github\_app\_installation\_id' is not used.  
-    github\_app\_installation\_id : (Optional) The installation id of the Github App. This conflicts with 'oauth\_token\_id' and can only be used if 'oauth\_token\_id' is not used.  
-    tags\_regex                 : (Optional) A regular expression used to trigger a Workspace run for matching Git tags. This option conflicts with 'trigger\_patterns' and 'trigger\_prefixes'. Should only set this value if the former is not being used.
-
-Type:
-
-```hcl
-object({
-    identifier                 = string
-    branch                     = optional(string, null)
-    ingress_submodules         = optional(bool, false)
-    oauth_token_id             = optional(string, null)
-    github_app_installation_id = optional(string, null)
-    tags_regex                 = optional(string, null)
-  })
-```
-
-Default: `null`
 
 ### <a name="input_working_directory"></a> [working\_directory](#input\_working\_directory)
 
