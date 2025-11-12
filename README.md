@@ -79,7 +79,7 @@ Type: `string`
 
 ### <a name="input_vcs_repo_identifier"></a> [vcs\_repo\_identifier](#input\_vcs\_repo\_identifier)
 
-Description: (Required) A reference to your VCS repository in the format '<vcs organization>/<repository>' where '<vcs organization>' and '<repository>' refer to the organization and repository in your VCS provider. The format for Azure DevOps is '<ado organization>/<ado project>/\_git/<ado repository>'.
+Description: (Required) A reference to your VCS repository in the format '<vcs organization>/<repository>'.
 
 Type: `string`
 
