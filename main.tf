@@ -12,7 +12,7 @@ data "tfe_oauth_client" "client" {
 
 resource "tfe_workspace" "this" {
 
-  name                          = var.name
+  name                          = lower(var.name)
   allow_destroy_plan            = var.allow_destroy_plan
   assessments_enabled           = var.assessments_enabled
   auto_apply                    = var.auto_apply
