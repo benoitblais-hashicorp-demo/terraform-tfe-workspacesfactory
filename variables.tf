@@ -71,7 +71,7 @@ variable "execution_mode" {
 variable "file_triggers_enabled" {
   description = "(Optional) Whether to filter runs based on the changed files in a VCS push. If enabled, the working directory and trigger prefixes describe a set of paths which must contain changes for a VCS push to trigger a run. If disabled, any push will trigger a run."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "global_remote_state" {
@@ -186,7 +186,7 @@ variable "terraform_version" {
 variable "trigger_patterns" {
   description = "(Optional) List of glob patterns that describe the files Terraform Cloud monitors for changes. Trigger patterns are always appended to the root directory of the repository. Mutually exclusive with `trigger-prefixes`."
   type        = list(string)
-  default     = null
+  default     = ["*.tf"]
 }
 
 variable "trigger_prefixes" {
