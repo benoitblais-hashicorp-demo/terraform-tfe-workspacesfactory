@@ -149,7 +149,7 @@ Description: (Optional) Whether to filter runs based on the changed files in a V
 
 Type: `bool`
 
-Default: `false`
+Default: `true`
 
 ### <a name="input_global_remote_state"></a> [global\_remote\_state](#input\_global\_remote\_state)
 
@@ -272,7 +272,13 @@ Description: (Optional) List of glob patterns that describe the files Terraform 
 
 Type: `list(string)`
 
-Default: `null`
+Default:
+
+```json
+[
+  "*.tf"
+]
+```
 
 ### <a name="input_trigger_prefixes"></a> [trigger\_prefixes](#input\_trigger\_prefixes)
 
