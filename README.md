@@ -79,7 +79,7 @@ Type: `string`
 
 ### <a name="input_vcs_repo_identifier"></a> [vcs\_repo\_identifier](#input\_vcs\_repo\_identifier)
 
-Description: (Required) A reference to your VCS repository in the format '<vcs organization>/<repository>' where '<vcs organization>' and '<repository>' refer to the organization and repository in your VCS provider. The format for Azure DevOps is '<ado organization>/<ado project>/\_git/<ado repository>'.
+Description: (Required) A reference to your VCS repository in the format '<vcs organization>/<repository>'.
 
 Type: `string`
 
@@ -149,7 +149,7 @@ Description: (Optional) Whether to filter runs based on the changed files in a V
 
 Type: `bool`
 
-Default: `false`
+Default: `true`
 
 ### <a name="input_global_remote_state"></a> [global\_remote\_state](#input\_global\_remote\_state)
 
@@ -272,7 +272,13 @@ Description: (Optional) List of glob patterns that describe the files Terraform 
 
 Type: `list(string)`
 
-Default: `null`
+Default:
+
+```json
+[
+  "*.tf"
+]
+```
 
 ### <a name="input_trigger_prefixes"></a> [trigger\_prefixes](#input\_trigger\_prefixes)
 
